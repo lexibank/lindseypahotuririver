@@ -35,16 +35,16 @@ class Dataset(pylexibank.Dataset):
     )
 
     def cmd_download(self, args):
-        #document = Spreadsheet('1AWx_sgsYy6tedegqeoXQMpVHK8HKNbQ2ObZTbkLG1bE')
-        #document.fetch_sheets(
-        #    sheets={'Transcriptions': 'transcriptions.csv'},
-        #    outdir=self.raw_dir,
-        #)
-        #for row in self.raw_dir.read_csv('transcriptions.csv', dicts=True):
-        #    output = self.raw_dir / 'audio' / row['File name']
-        #    if not output.exists() and row['Audio link']:
-        #        fid = row['Audio link'].split('file/d/')[1].split('/view?')[0]
-        #        gdown.download(id=fid, output=str(output))
+        document = Spreadsheet('1AWx_sgsYy6tedegqeoXQMpVHK8HKNbQ2ObZTbkLG1bE')
+        document.fetch_sheets(
+            sheets={'Transcriptions': 'transcriptions.csv'},
+            outdir=self.raw_dir,
+        )
+        for row in self.raw_dir.read_csv('transcriptions.csv', dicts=True):
+            output = self.raw_dir / 'audio' / row['File name']
+            if not output.exists() and row['Audio link']:
+                fid = row['Audio link'].split('file/d/')[1].split('/view?')[0]
+                gdown.download(id=fid, output=str(output))
         for p in self.raw_dir.joinpath('audio').glob('*.wav'):
             #subprocess.check_call(['lame', '--preset', 'insane', str(p), p.parent / '{}.mp3'.format(p.stem)])
             subprocess.check_call(['lame', '--preset', 'medium', str(p), p.parent / '{}.mp3'.format(p.stem)])
